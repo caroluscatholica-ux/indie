@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>OrkestraKu - Ensiklopedia Alat Musik Orkestra</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#080d1c;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* =========================
+   BACKGROUND NOT BALOK
+========================= */
+
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 20% 20%,#18284d,transparent 35%),
+        radial-gradient(circle at 80% 80%,#2a1b45,transparent 35%),
+        #080d1c;
+}
+
+.staff{
+    position:absolute;
+    width:130%;
+    left:-15%;
+    transform:rotate(-7deg);
+    opacity:.12;
+}
+
+.staff:nth-child(1){top:5%}
+.staff:nth-child(2){top:30%}
+.staff:nth-child(3){top:55%}
+.staff:nth-child(4){top:80%}
+
+.staff .line{
+    height:2px;
+    background:white;
+    margin:13px 0;
+}
+
+.notes{
+    position:absolute;
+    top:-25px;
+    font-family:Georgia,serif;
+    font-size:55px;
+    white-space:nowrap;
+    animation:moveNotes 25s linear infinite;
+}
+
+.staff:nth-child(2) .notes{
+    animation-duration:32s;
+}
+
+.staff:nth-child(3) .notes{
+    animation-duration:28s;
+}
+
+.staff:nth-child(4) .notes{
+    animation-duration:35s;
+}
+
+@keyframes moveNotes{
+    from{transform:translateX(100vw)}
+    to{transform:translateX(-100%)}
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:100;
+
+    padding:18px 7%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    background:rgba(5,9,20,.78);
+    backdrop-filter:blur(15px);
+
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    color:#f5c451;
+}
+
+.logo span{
+    color:white;
+}
+
+nav ul{
+    list-style:none;
+    display:flex;
+    gap:30px;
+}
+
+nav a{
+    color:#ddd;
+    text-decoration:none;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#f5c451;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+
+    padding:120px 20px 70px;
+}
+
+.hero-content{
+    max-width:900px;
+}
+
+.badge{
+    display:inline-block;
+    padding:9px 18px;
+
+    border:1px solid #f5c451;
+    border-radius:50px;
+
+    color:#f5c451;
+
+    font-size:13px;
+    letter-spacing:1px;
+
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:clamp(45px,8vw,88px);
+    line-height:1;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    color:#f5c451;
+}
+
+.hero p{
+    max-width:700px;
+    margin:auto;
+
+    color:#aeb6ca;
+
+    font-size:18px;
+    line-height:1.8;
+}
+
+.hero-button{
+    display:inline-block;
+
+    margin-top:35px;
+    padding:15px 30px;
+
+    background:#f5c451;
+    color:#111827;
+
+    border-radius:50px;
+
+    text-decoration:none;
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.hero-button:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 35px rgba(245,196,81,.25);
+}
+
+/* =========================
+   SECTION
+========================= */
+
+section{
+    padding:100px 7%;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.title h2{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.title p{
+    color:#929bb1;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search{
+    max-width:600px;
+    margin:0 auto 30px;
+}
+
+.search input{
+    width:100%;
+
+    padding:17px 22px;
+
+    border-radius:50px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    background:rgba(255,255,255,.06);
+
+    color:white;
+
+    outline:none;
+
+    font-size:16px;
+}
+
+.search input:focus{
+    border-color:#f5c451;
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.filters{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+
+    margin-bottom:45px;
+}
+
+.filter{
+    padding:11px 20px;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.05);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.filter:hover,
+.filter.active{
+    background:#f5c451;
+    color:#101525;
+    border-color:#f5c451;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+    background:rgba(255,255,255,.055);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(10px);
+
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+
+    border-color:rgba(245,196,81,.55);
+
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+/* =========================
+   INSTRUMENT IMAGE
+========================= */
+
+.instrument{
+    height:220px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(245,196,81,.13),
+            transparent 65%
+        );
+}
+
+.instrument svg{
+    width:90%;
+    height:180px;
+
+    overflow:visible;
+
+    filter:
+        drop-shadow(
+            0 8px 10px rgba(0,0,0,.35)
+        );
+}
+
+/* =========================
+   CARD TEXT
+========================= */
+
+.content{
+    padding:24px;
+}
+
+.category{
+    color:#f5c451;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+.content h3{
+    font-size:26px;
+    margin:8px 0 12px;
+}
+
+.content p{
+    color:#aeb6c8;
+    line-height:1.7;
+    font-size:15px;
+}
+
+.info{
+    margin-top:18px;
+    padding-top:18px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.info strong{
+    display:block;
+    color:white;
+    margin-bottom:5px;
+}
+
+/* =========================
+   ABOUT
+========================= */
+
+.about{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:60px;
+
+    align-items:center;
+}
+
+.about-label{
+    color:#f5c451;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+}
+
+.about h2{
+    font-size:45px;
+    margin:15px 0 20px;
+}
+
+.about p{
+    color:#aeb6c8;
+
+    line-height:1.9;
+
+    margin-bottom:15px;
+}
+
+.about-box{
+    min-height:350px;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    border-radius:30px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(245,196,81,.15),
+            transparent 65%
+        );
+
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.about-box span{
+    font-size:150px;
+
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-15px);
+    }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    padding:50px 7%;
+
+    text-align:center;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    color:#788198;
+}
+
+footer strong{
+    color:#f5c451;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    nav{
+        padding:16px 5%;
+    }
+
+    nav ul{
+        display:none;
+    }
+
+    section{
+        padding:75px 5%;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .about{
+        grid-template-columns:1fr;
+    }
+
+    .about h2{
+        font-size:36px;
+    }
+
+    .instrument{
+        height:210px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     BACKGROUND
+========================= -->
+
+<div class="background">
+
+    <div class="staff">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+
+        <div class="notes">
+            ♪ ♫ ♩ ♬ ♪ ♩ ♫ ♪ ♬
+        </div>
+    </div>
+
+    <div class="staff">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+
+        <div class="notes">
+            ♩ ♪ ♫ ♬ ♩ ♪ ♫ ♩
+        </div>
+    </div>
+
+    <div class="staff">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+
+        <div class="notes">
+            ♫ ♪ ♩ ♬ ♪ ♫ ♩ ♪
+        </div>
+    </div>
+
+    <div class="staff">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+
+        <div class="notes">
+            ♪ ♬ ♩ ♫ ♪ ♩ ♬ ♫
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        🎼 Orkestra<span>Ku</span>
+    </div>
+
+    <ul>
+        <li><a href="#home">Beranda</a></li>
+        <li><a href="#instrumen">Instrumen</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+    </ul>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            ENSIKLOPEDIA MUSIK KLASIK
+        </div>
+
+        <h1>
+            Mengenal Dunia
+            <br>
+            <span>Alat Musik Orkestra</span>
+        </h1>
+
+        <p>
+            Pelajari berbagai alat musik orkestra,
+            mulai dari biola, flute, klarinet, trumpet,
+            hingga triangle beserta fungsi dan karakter suaranya.
+        </p>
+
+        <a href="#instrumen" class="hero-button">
+            Jelajahi Instrumen →
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     INSTRUMEN
+========================= -->
+
+<section id="instrumen">
+
+<div class="title">
+
+    <h2>Alat Musik Orkestra</h2>
+
+    <p>
+        Kenali bentuk dan fungsi berbagai instrumen
+        dalam sebuah orkestra.
+    </p>
+
+</div>
+
+
+<div class="search">
+
+    <input
+        type="text"
+        id="search"
+        placeholder="🔎 Cari alat musik..."
+    >
+
+</div>
+
+
+<div class="filters">
+
+    <button class="filter active" data-category="all">
+        Semua
+    </button>
+
+    <button class="filter" data-category="gesek">
+        🎻 Gesek
+    </button>
+
+    <button class="filter" data-category="kayu">
+        🎵 Tiup Kayu
+    </button>
+
+    <button class="filter" data-category="logam">
+        🎺 Tiup Logam
+    </button>
+
+    <button class="filter" data-category="perkusi">
+        🥁 Perkusi
+    </button>
+
+</div>
+
+
+<div class="grid">
+
+
+<!-- =====================================================
+     BIOLA
+===================================================== -->
+
+<article class="card" data-category="gesek">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<!-- Neck -->
+<rect x="105" y="10" width="10" height="85" rx="4"
+      fill="#5b321c"/>
+
+<!-- Head -->
+<ellipse cx="110" cy="12" rx="13" ry="10"
+         fill="#7c421f"/>
+
+<!-- Body -->
+<path
+d="M110 80
+C85 70 78 95 92 110
+C72 130 85 165 110 158
+C135 165 148 130 128 110
+C142 95 135 70 110 80Z"
+fill="#a85d2c"/>
+
+<!-- Fingerboard -->
+<path
+d="M106 25 L114 25 L119 120 L101 120 Z"
+fill="#252525"/>
+
+<!-- Strings -->
+<line x1="107" y1="25" x2="105" y2="145"
+      stroke="#ddd" stroke-width="1"/>
+<line x1="110" y1="25" x2="110" y2="145"
+      stroke="#ddd" stroke-width="1"/>
+<line x1="113" y1="25" x2="115" y2="145"
+      stroke="#ddd" stroke-width="1"/>
+
+<!-- Bridge -->
+<rect x="99" y="116" width="22" height="4"
+      fill="#e5c58a"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Gesek</span>
+
+<h3>Biola</h3>
+
+<p>
+Biola adalah alat musik gesek berukuran kecil
+dengan empat senar. Suaranya tinggi, cerah,
+dan ekspresif.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Sering memainkan melodi utama dan menjadi
+bagian terbesar dalam seksi gesek.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     VIOLA
+===================================================== -->
+
+<article class="card" data-category="gesek">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<rect x="104" y="10" width="12" height="80"
+      fill="#51301c"/>
+
+<ellipse cx="110" cy="12" rx="14" ry="10"
+         fill="#75401f"/>
+
+<path
+d="M110 75
+C82 65 75 95 91 112
+C70 135 85 168 110 160
+C135 168 150 135 129 112
+C145 95 138 65 110 75Z"
+fill="#89502c"/>
+
+<path
+d="M105 25 L115 25 L120 120 L100 120 Z"
+fill="#252525"/>
+
+<line x1="108" y1="25" x2="106" y2="145"
+      stroke="#ddd"/>
+
+<line x1="111" y1="25" x2="110" y2="145"
+      stroke="#ddd"/>
+
+<line x1="114" y1="25" x2="115" y2="145"
+      stroke="#ddd"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Gesek</span>
+
+<h3>Viola</h3>
+
+<p>
+Viola mempunyai bentuk seperti biola tetapi
+sedikit lebih besar dan menghasilkan suara
+yang lebih rendah dan hangat.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Mengisi wilayah suara tengah dan membantu
+membangun harmoni.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     CELLO
+===================================================== -->
+
+<article class="card" data-category="gesek">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<rect x="103" y="5" width="14" height="75"
+      fill="#4d2a18"/>
+
+<ellipse cx="110" cy="7" rx="16" ry="11"
+         fill="#713b1c"/>
+
+<path
+d="M110 68
+C75 55 67 90 88 110
+C60 140 80 178 110 166
+C140 178 160 140 132 110
+C153 90 145 55 110 68Z"
+fill="#914a25"/>
+
+<path
+d="M103 22 L117 22 L122 120 L98 120 Z"
+fill="#222"/>
+
+<line x1="107" y1="22" x2="106" y2="150"
+      stroke="#ddd"/>
+
+<line x1="110" y1="22" x2="110" y2="150"
+      stroke="#ddd"/>
+
+<line x1="113" y1="22" x2="114" y2="150"
+      stroke="#ddd"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Gesek</span>
+
+<h3>Cello</h3>
+
+<p>
+Cello berukuran lebih besar daripada viola
+dan dimainkan sambil duduk. Suaranya dalam,
+hangat, dan kaya.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memainkan melodi, harmoni, serta garis bass.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     KONTRABAS
+===================================================== -->
+
+<article class="card" data-category="gesek">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<rect x="102" y="0" width="16" height="85"
+      fill="#472719"/>
+
+<ellipse cx="110" cy="5" rx="18" ry="12"
+         fill="#63351c"/>
+
+<path
+d="M110 65
+C68 48 55 92 84 116
+C50 145 75 180 110 170
+C145 180 170 145 136 116
+C165 92 152 48 110 65Z"
+fill="#79401f"/>
+
+<path
+d="M102 20 L118 20 L124 125 L96 125 Z"
+fill="#202020"/>
+
+<line x1="106" y1="20" x2="105" y2="155"
+      stroke="#ddd"/>
+
+<line x1="110" y1="20" x2="110" y2="155"
+      stroke="#ddd"/>
+
+<line x1="114" y1="20" x2="115" y2="155"
+      stroke="#ddd"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Gesek</span>
+
+<h3>Kontrabas</h3>
+
+<p>
+Kontrabas adalah anggota terbesar keluarga
+gesek dan menghasilkan nada yang sangat rendah.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memberikan fondasi nada rendah bagi orkestra.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     FLUTE
+===================================================== -->
+
+<article class="card" data-category="kayu">
+
+<div class="instrument">
+
+<svg viewBox="0 0 260 180">
+
+<!-- Main tube -->
+<rect
+x="30"
+y="82"
+width="190"
+height="16"
+rx="8"
+fill="#d9dde2"/>
+
+<!-- Highlights -->
+<rect
+x="35"
+y="84"
+width="180"
+height="4"
+rx="2"
+fill="#ffffff"/>
+
+<!-- Head joint -->
+<rect
+x="18"
+y="78"
+width="38"
+height="24"
+rx="8"
+fill="#aeb5bd"/>
+
+<!-- Foot -->
+<rect
+x="215"
+y="80"
+width="28"
+height="20"
+rx="5"
+fill="#9ca3ab"/>
+
+<!-- Keys -->
+<g fill="#777">
+
+<circle cx="75" cy="78" r="5"/>
+<circle cx="95" cy="78" r="5"/>
+<circle cx="115" cy="78" r="5"/>
+<circle cx="135" cy="78" r="5"/>
+<circle cx="155" cy="78" r="5"/>
+<circle cx="175" cy="78" r="5"/>
+
+</g>
+
+<!-- Key rods -->
+<line
+x1="65"
+y1="72"
+x2="190"
+y2="72"
+stroke="#777"
+stroke-width="3"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Kayu</span>
+
+<h3>Flute</h3>
+
+<p>
+Flute berbentuk tabung panjang dengan lubang
+dan mekanisme kunci. Instrumen ini dimainkan
+dengan meniupkan udara melewati lubang pada
+bagian kepala flute.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Sering memainkan melodi dengan karakter
+suara ringan, jernih, dan tinggi.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     OBOE
+===================================================== -->
+
+<article class="card" data-category="kayu">
+
+<div class="instrument">
+
+<svg viewBox="0 0 180 200">
+
+<!-- Reed -->
+<path
+d="M86 10 L94 10 L97 35 L83 35 Z"
+fill="#b98650"/>
+
+<!-- Upper joint -->
+<path
+d="M80 32 L100 32 L103 75 L77 75 Z"
+fill="#75401f"/>
+
+<!-- Body -->
+<path
+d="M77 70 L103 70 L108 155 L72 155 Z"
+fill="#8e4d26"/>
+
+<!-- Bell -->
+<path
+d="M72 150 L108 150 L120 180 L60 180 Z"
+fill="#713a20"/>
+
+<!-- Keys -->
+<g fill="#d5d5d5">
+
+<circle cx="78" cy="78" r="4"/>
+<circle cx="102" cy="90" r="4"/>
+<circle cx="79" cy="104" r="4"/>
+<circle cx="101" cy="118" r="4"/>
+<circle cx="80" cy="132" r="4"/>
+
+</g>
+
+<g stroke="#d5d5d5" stroke-width="3">
+
+<line x1="78" y1="78" x2="72" y2="78"/>
+<line x1="102" y1="90" x2="108" y2="90"/>
+<line x1="79" y1="104" x2="72" y2="104"/>
+<line x1="101" y1="118" x2="108" y2="118"/>
+
+</g>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Kayu</span>
+
+<h3>Oboe</h3>
+
+<p>
+Oboe adalah alat musik tiup kayu dengan reed
+ganda. Bentuknya ramping dan bagian bawahnya
+melebar membentuk bell.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Sering digunakan untuk memainkan melodi
+dengan warna suara yang khas.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     KLARINET
+===================================================== -->
+
+<article class="card" data-category="kayu">
+
+<div class="instrument">
+
+<svg viewBox="0 0 160 210">
+
+<!-- Mouthpiece -->
+<path
+d="M73 10 L87 10 L90 38 L70 38 Z"
+fill="#181818"/>
+
+<!-- Upper -->
+<rect
+x="68"
+y="35"
+width="24"
+height="45"
+rx="4"
+fill="#151515"/>
+
+<!-- Lower -->
+<rect
+x="66"
+y="75"
+width="28"
+height="75"
+rx="5"
+fill="#101010"/>
+
+<!-- Bell -->
+<path
+d="M66 145 L94 145 L108 180 L52 180 Z"
+fill="#171717"/>
+
+<!-- Keys -->
+<g fill="#c9c9c9">
+
+<circle cx="66" cy="55" r="4"/>
+<circle cx="94" cy="68" r="4"/>
+<circle cx="66" cy="88" r="4"/>
+<circle cx="94" cy="102" r="4"/>
+<circle cx="66" cy="118" r="4"/>
+<circle cx="94" cy="132" r="4"/>
+
+</g>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Kayu</span>
+
+<h3>Klarinet</h3>
+
+<p>
+Klarinet berbentuk tabung panjang dengan
+mouthpiece, berbagai kunci logam, dan bell
+yang melebar pada bagian bawah.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Dapat memainkan melodi maupun harmoni
+dengan karakter suara yang fleksibel.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     BASSOON
+===================================================== -->
+
+<article class="card" data-category="kayu">
+
+<div class="instrument">
+
+<svg viewBox="0 0 190 220">
+
+<!-- Long wooden tube -->
+<rect
+x="62"
+y="35"
+width="25"
+height="155"
+rx="7"
+fill="#71391f"/>
+
+<!-- Second tube -->
+<rect
+x="103"
+y="60"
+width="25"
+height="130"
+rx="7"
+fill="#8b4925"/>
+
+<!-- Bottom U connection -->
+<path
+d="M62 180
+C62 205 128 205 128 180"
+fill="none"
+stroke="#67321c"
+stroke-width="15"/>
+
+<!-- Bocal -->
+<path
+d="M75 35
+C75 20 105 15 110 5"
+fill="none"
+stroke="#b8a16a"
+stroke-width="6"/>
+
+<!-- Bell -->
+<path
+d="M101 55
+L130 55
+L140 25
+L91 25 Z"
+fill="#8a4724"/>
+
+<!-- Keys -->
+<g fill="#d0d0d0">
+
+<circle cx="60" cy="65" r="4"/>
+<circle cx="90" cy="80" r="4"/>
+<circle cx="60" cy="100" r="4"/>
+<circle cx="90" cy="120" r="4"/>
+<circle cx="60" cy="140" r="4"/>
+<circle cx="90" cy="155" r="4"/>
+
+</g>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Kayu</span>
+
+<h3>Bassoon</h3>
+
+<p>
+Bassoon memiliki dua tabung panjang yang
+terhubung di bagian bawah. Instrumen ini
+menggunakan reed ganda dan menghasilkan
+suara rendah.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Mengisi wilayah nada rendah dalam keluarga
+tiup kayu.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     TRUMPET
+===================================================== -->
+
+<article class="card" data-category="logam">
+
+<div class="instrument">
+
+<svg viewBox="0 0 250 180">
+
+<!-- Tube -->
+<path
+d="M25 90
+H160
+C175 90 175 70 190 70"
+fill="none"
+stroke="#d6a92d"
+stroke-width="14"/>
+
+<!-- Valves -->
+<rect x="85" y="55" width="12" height="40"
+      rx="4" fill="#e5bd4c"/>
+
+<rect x="105" y="55" width="12" height="40"
+      rx="4" fill="#e5bd4c"/>
+
+<rect x="125" y="55" width="12" height="40"
+      rx="4" fill="#e5bd4c"/>
+
+<!-- Bell -->
+<path
+d="M185 50
+L240 30
+L240 100
+L185 80 Z"
+fill="#d8ad31"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Logam</span>
+
+<h3>Trumpet</h3>
+
+<p>
+Trumpet merupakan alat musik tiup logam
+dengan tiga katup dan bell besar di bagian depan.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Menghasilkan suara terang dan kuat untuk
+melodi, fanfare, serta aksen.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     FRENCH HORN
+===================================================== -->
+
+<article class="card" data-category="logam">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 190">
+
+<!-- Circular tubing -->
+<circle
+cx="100"
+cy="95"
+r="65"
+fill="none"
+stroke="#d5a82f"
+stroke-width="15"/>
+
+<!-- Inner tubing -->
+<circle
+cx="100"
+cy="95"
+r="35"
+fill="none"
+stroke="#e0b43c"
+stroke-width="9"/>
+
+<!-- Mouth tube -->
+<path
+d="M100 30
+C125 10 150 15 155 30"
+fill="none"
+stroke="#d5a82f"
+stroke-width="8"/>
+
+<!-- Bell -->
+<path
+d="M145 45
+L205 20
+L210 65
+L145 80 Z"
+fill="#d6a72c"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Logam</span>
+
+<h3>French Horn</h3>
+
+<p>
+French horn mempunyai pipa yang melingkar
+dan bell yang mengarah ke belakang.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Menghasilkan warna suara hangat dan sering
+menghubungkan kelompok tiup kayu dan logam.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     TROMBONE
+===================================================== -->
+
+<article class="card" data-category="logam">
+
+<div class="instrument">
+
+<svg viewBox="0 0 250 190">
+
+<!-- Slide -->
+<path
+d="M30 50
+V120
+H125
+V50"
+fill="none"
+stroke="#d4a72c"
+stroke-width="9"/>
+
+<!-- Main tube -->
+<rect
+x="120"
+y="55"
+width="80"
+height="12"
+rx="5"
+fill="#e1b33b"/>
+
+<!-- Bell -->
+<path
+d="M185 35
+L245 15
+L245 100
+L185 80 Z"
+fill="#d8aa2f"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Logam</span>
+
+<h3>Trombone</h3>
+
+<p>
+Trombone mempunyai slide panjang yang
+digunakan untuk mengubah tinggi nada.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memberikan suara kuat dan mempertegas
+harmoni serta aksen.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     TUBA
+===================================================== -->
+
+<article class="card" data-category="logam">
+
+<div class="instrument">
+
+<svg viewBox="0 0 210 200">
+
+<!-- Body -->
+<path
+d="M70 45
+C35 60 40 145 85 155
+C130 165 145 110 125 75"
+fill="none"
+stroke="#d2a32a"
+stroke-width="25"/>
+
+<!-- Valves -->
+<rect x="75" y="45" width="12" height="45"
+      rx="4" fill="#e7bd46"/>
+
+<rect x="94" y="45" width="12" height="45"
+      rx="4" fill="#e7bd46"/>
+
+<rect x="113" y="45" width="12" height="45"
+      rx="4" fill="#e7bd46"/>
+
+<!-- Bell -->
+<path
+d="M115 55
+L185 25
+L190 90
+L115 75 Z"
+fill="#d8aa2f"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Tiup Logam</span>
+
+<h3>Tuba</h3>
+
+<p>
+Tuba merupakan salah satu instrumen terbesar
+dalam keluarga tiup logam dan menghasilkan
+suara sangat rendah.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memperkuat bagian bass dan fondasi suara
+kelompok tiup logam.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     TIMPANI
+===================================================== -->
+
+<article class="card" data-category="perkusi">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<!-- Bowl -->
+<path
+d="M35 70
+C40 135 180 135 185 70
+Z"
+fill="#a87520"/>
+
+<!-- Head -->
+<ellipse
+cx="110"
+cy="70"
+rx="75"
+ry="25"
+fill="#ddd"/>
+
+<!-- Rim -->
+<ellipse
+cx="110"
+cy="70"
+rx="78"
+ry="28"
+fill="none"
+stroke="#d3a52d"
+stroke-width="8"/>
+
+<!-- Legs -->
+<line x1="65" y1="120" x2="55" y2="165"
+      stroke="#999" stroke-width="7"/>
+
+<line x1="155" y1="120" x2="165" y2="165"
+      stroke="#999" stroke-width="7"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Perkusi</span>
+
+<h3>Timpani</h3>
+
+<p>
+Timpani adalah drum besar yang mempunyai
+tinggi nada tertentu.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memberikan aksen ritmis dan memperkuat
+bagian dramatis musik.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     SNARE DRUM
+===================================================== -->
+
+<article class="card" data-category="perkusi">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<!-- Drum -->
+<ellipse
+cx="110"
+cy="75"
+rx="75"
+ry="25"
+fill="#ddd"/>
+
+<rect
+x="35"
+y="75"
+width="150"
+height="55"
+fill="#b8bec5"/>
+
+<ellipse
+cx="110"
+cy="130"
+rx="75"
+ry="25"
+fill="#999"/>
+
+<!-- Sticks -->
+<line x1="55" y1="35" x2="150" y2="95"
+      stroke="#d4a875" stroke-width="6"/>
+
+<line x1="165" y1="35" x2="70" y2="95"
+      stroke="#d4a875" stroke-width="6"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Perkusi</span>
+
+<h3>Snare Drum</h3>
+
+<p>
+Snare drum menghasilkan suara pendek dan
+tajam dengan bantuan kawat snare.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Digunakan untuk ritme, aksen, dan efek dramatis.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     CYMBAL
+===================================================== -->
+
+<article class="card" data-category="perkusi">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 180">
+
+<!-- Cymbal -->
+<ellipse
+cx="110"
+cy="65"
+rx="85"
+ry="25"
+fill="#d5ad3a"/>
+
+<ellipse
+cx="110"
+cy="65"
+rx="65"
+ry="18"
+fill="#e5c55b"/>
+
+<circle
+cx="110"
+cy="65"
+r="8"
+fill="#9a741b"/>
+
+<!-- Stand -->
+<line x1="110" y1="85" x2="110" y2="160"
+      stroke="#aaa" stroke-width="7"/>
+
+<line x1="70" y1="160" x2="150" y2="160"
+      stroke="#aaa" stroke-width="6"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Perkusi</span>
+
+<h3>Cymbal</h3>
+
+<p>
+Cymbal adalah kepingan logam berbentuk bundar
+yang menghasilkan suara terang dan kuat.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memberikan aksen dan memperkuat bagian
+klimaks musik.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+<!-- =====================================================
+     TRIANGLE
+===================================================== -->
+
+<article class="card" data-category="perkusi">
+
+<div class="instrument">
+
+<svg viewBox="0 0 220 190">
+
+<!-- Triangle -->
+<path
+d="M110 20
+L185 150
+H35
+Z"
+fill="none"
+stroke="#d9b13c"
+stroke-width="10"
+stroke-linejoin="round"/>
+
+<!-- Open gap -->
+<path
+d="M108 20
+L135 65"
+stroke="#080d1c"
+stroke-width="15"/>
+
+<!-- Hanging string -->
+<line
+x1="110"
+y1="5"
+x2="110"
+y2="20"
+stroke="#aaa"
+stroke-width="3"/>
+
+</svg>
+
+</div>
+
+<div class="content">
+
+<span class="category">Perkusi</span>
+
+<h3>Triangle</h3>
+
+<p>
+Triangle adalah alat musik perkusi berbentuk
+segitiga yang dibuat dari batang logam.
+Bunyinya tinggi, jernih, dan berkilau.
+</p>
+
+<div class="info">
+
+<strong>Peran dalam orkestra</strong>
+
+<p>
+Memberikan aksen ritmis dan warna suara
+yang khas.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     TENTANG
+========================= -->
+
+<section id="tentang">
+
+<div class="about">
+
+<div>
+
+<div class="about-label">
+TENTANG ORKESTRA
+</div>
+
+<h2>
+Banyak Instrumen,
+Satu Harmoni
+</h2>
+
+<p>
+Orkestra adalah kelompok besar pemain musik
+yang memainkan karya musik secara bersama-sama.
+Setiap alat musik mempunyai karakter suara,
+jangkauan nada, dan fungsi yang berbeda.
+</p>
+
+<p>
+Instrumen orkestra umumnya dikelompokkan menjadi
+empat keluarga utama, yaitu gesek, tiup kayu,
+tiup logam, dan perkusi.
+</p>
+
+</div>
+
+<div class="about-box">
+
+<span>🎼</span>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+<p>
+🎼 <strong>OrkestraKu</strong>
+— Ensiklopedia Alat Musik Orkestra
+</p>
+
+<p style="margin-top:10px">
+Website pembelajaran musik interaktif
+</p>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   FILTER
+========================= */
+
+const cards =
+document.querySelectorAll(".card");
+
+const buttons =
+document.querySelectorAll(".filter");
+
+const search =
+document.getElementById("search");
+
+let activeCategory = "all";
+
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        buttons.forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        activeCategory =
+            button.dataset.category;
+
+        update();
+
+    });
+
+});
+
+
+/* =========================
+   SEARCH
+========================= */
+
+search.addEventListener("input", update);
+
+
+/* =========================
+   UPDATE
+========================= */
+
+function update(){
+
+    const keyword =
+        search.value.toLowerCase().trim();
+
+    cards.forEach(card => {
+
+        const category =
+            card.dataset.category;
+
+        const text =
+            card.innerText.toLowerCase();
+
+        const categoryOK =
+            activeCategory === "all" ||
+            category === activeCategory;
+
+        const searchOK =
+            text.includes(keyword);
+
+        if(categoryOK && searchOK){
+
+            card.style.display = "";
+
+        }else{
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
